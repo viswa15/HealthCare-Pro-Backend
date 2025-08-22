@@ -17,9 +17,28 @@ const app = express();
 // Connect to the database
 connectDB();
 
+// --- Create a whitelist of allowed domains ---
+const whitelist = [
+    'http://localhost:5173', // For local development
+    // // Your production frontend
+];
+
+const corsOptions = {
+    origin: function (origin, callback) {
+        // The 'origin' is the URL of the site making the request (e.g., your Vercel URL)
+        // The '|| !origin' part allows requests that don't have an origin, like from Postman or mobile apps.
+        if (whitelist.indexOf(origin) !== -1 || !origin) {
+            callback(null, true); // Allow the request
+        } else {
+            callback(new Error('Not allowed by CORS')); // Block the request
+        }
+    },
+    credentials: true
+};
+
 // Middleware
 // Enable CORS for all routes. This is important for frontend applications to communicate with this backend.
-app.use(cors());
+app.use(cors(corsOptions));
 // Parse incoming JSON requests. This makes req.body available for JSON payloads.
 app.use(express.json());
 
