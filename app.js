@@ -19,8 +19,9 @@ connectDB();
 
 // --- Create a whitelist of allowed domains ---
 const whitelist = [
-    'http://localhost:5173', // For local development
+    // 'http://localhost:5173', // For local development
     // // Your production frontend
+    "*"
 ];
 
 const corsOptions = {
